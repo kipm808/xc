@@ -34,7 +34,7 @@ jobs:
             asset: xc
           - os: macos-latest
             target: x86_64-apple-darwin
-            asset: xc
+            asset: xc_macos
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             asset: xc.exe
@@ -47,6 +47,8 @@ jobs:
         with:
           targets: ${{ matrix.target }}
       - run: cargo build --release --target ${{ matrix.target }}
+      - if: matrix.asset == 'xc_macos'
+        run: mv target/${{ matrix.target }}/release/xc target/${{ matrix.target }}/release/xc_macos
       - name: Upload release asset
         uses: softprops/action-gh-release@v2
         with:
